@@ -1,32 +1,17 @@
 {
   "name": "metascraperweknow",
   "version": "1.0.0",
-  "main": "index.js",
-  "type": "module",
+  "main": "app.js",
   "scripts": {
-    "start": "node index.js"
-  },
-  "engines": {
-    "node": ">=16"
+    "start": "node app.js"
   },
   "dependencies": {
-    "axios": "^1.6.0",
     "express": "^4.18.2",
+    "axios": "^1.6.0",
     "metascraper": "^5.33.4",
-    "metascraper-audio": "^5.33.4",
-    "metascraper-author": "^5.33.4",
-    "metascraper-date": "^5.33.4",
     "metascraper-description": "^5.33.4",
-    "metascraper-feed": "^5.33.4",
-    "metascraper-iframe": "^5.33.4",
     "metascraper-image": "^5.33.4",
-    "metascraper-lang": "^5.33.4",
-    "metascraper-logo": "^5.33.4",
-    "metascraper-logo-favicon": "^5.33.4",
-    "metascraper-media-provider": "^5.33.4",
-    "metascraper-publisher": "^5.33.4",
     "metascraper-title": "^5.33.4",
-    "metascraper-url": "^5.33.4",
-    "metascraper-video": "^5.33.4"
+    "metascraper-url": "^5.33.4"
   }
 }
