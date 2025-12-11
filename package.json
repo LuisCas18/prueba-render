@@ -12,6 +12,8 @@
     "metascraper-description": "^5.33.4",
     "metascraper-image": "^5.33.4",
     "metascraper-title": "^5.33.4",
-    "metascraper-url": "^5.33.4"
+    "metascraper-url": "^5.33.4",
+    "metascraper-media-provider": "^5.33.4",
+    "metascraper-iframe": "^5.33.4"
   }
 }
