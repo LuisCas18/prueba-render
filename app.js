@@ -1,65 +1,47 @@
 const express = require("express");
+const axios = require("axios");
+
 const metascraper = require("metascraper");
 const description = require("metascraper-description");
 const image = require("metascraper-image");
 const title = require("metascraper-title");
 const urlMetadata = require("metascraper-url");
-const mediaProvider = require("metascraper-media-provider");
-const iframe = require("metascraper-iframe");
-const axios = require("axios");
-
-const app = express();
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
 
 const scraper = metascraper([
-  iframe(),
-  mediaProvider(),
   description(),
   image(),
   title(),
   urlMetadata(),
 ]);
 
+const app = express();
+app.use(express.json());
+
 app.post("/linkpreview", async (req, res) => {
+  const { url } = req.body;
+
+  if (!url) {
+    return res.json({ success: false, error: "Missing URL" });
+  }
+
   try {
-    const targetUrl = req.body.url;
-
-    if (!targetUrl) {
-      return res.json({ success: false, error: "Missing URL" });
-    }
-
-    const response = await axios.get(targetUrl, {
+    const response = await axios.get(url, {
       headers: {
         "User-Agent":
-          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0 Safari/537.36",
-        "Accept-Language": "es-ES,es;q=0.9,en;q=0.8",
-        Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0 Safari/537.36",
       },
-      maxRedirects: 5,
     });
 
-    const contentType = response.headers["content-type"] || "text/html";
-    const html = response.data;
-    const finalUrl = response.request.res.responseUrl || targetUrl;
-
-    const metadata = await scraper({ html, url: finalUrl });
+    const metadata = await scraper({
+      html: response.data,
+      url,
+    });
 
     return res.json({
       success: true,
-      result: {
-        mimetype: contentType,
-        siteData: {
-          url: metadata.url || finalUrl,
-          title: metadata.title || "",
-          description: metadata.description || "",
-          image: metadata.image || ""
-        }
-      }
+      result: metadata,
     });
-
   } catch (err) {
-    console.error(err);
     return res.json({
       success: false,
       error: err.message,
@@ -67,8 +49,5 @@ app.post("/linkpreview", async (req, res) => {
   }
 });
 
-// Render OBLIGA a usar process.env.PORT
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () =>
-  console.log(`MetaScraper Weknow API running on port ${PORT}`)
-);
+app.listen(PORT, () => console.log("Server running on port " + PORT));
