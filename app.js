@@ -30,7 +30,6 @@ app.post("/linkpreview", async (req, res) => {
     }
 
     const response = await axios.get(targetUrl, {
-      timeout: 9000,
       headers: {
         "User-Agent":
           "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0 Safari/537.36",
